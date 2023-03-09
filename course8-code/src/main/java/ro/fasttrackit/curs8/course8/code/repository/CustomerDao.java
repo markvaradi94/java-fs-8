@@ -1,9 +1,11 @@
 package ro.fasttrackit.curs8.course8.code.repository;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
-import ro.fasttrackit.curs8.course8.code.model.entity.Address;
 import ro.fasttrackit.curs8.course8.code.model.entity.Customer;
 import ro.fasttrackit.curs8.course8.code.model.filters.CustomerFilters;
 
@@ -26,10 +28,7 @@ public class CustomerDao {
     public List<Customer> getAll(CustomerFilters filters) {
         CriteriaQuery<Customer> criteria = criteriaBuilder.createQuery(Customer.class);
         Root<Customer> root = criteria.from(Customer.class);
-//        CriteriaQuery<Customer> query = criteria.select(root);
         List<Predicate> wherePredicate = new ArrayList<>();
-        Subquery<Address> addressSubquery = criteria.subquery(Address.class);
-        Root<Address> addressRoot = addressSubquery.from(Address.class);
 
         ofNullable(filters.name())
                 .ifPresent(name -> wherePredicate.add(criteriaBuilder.equal(root.get("name"), name)));
