@@ -8,6 +8,8 @@ import ro.fasttrackit.curs8.course8.code.repository.CustomerRepository;
 import ro.fasttrackit.curs8.course8.code.repository.ReviewRepository;
 
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -126,5 +128,17 @@ public class DataLoader implements CommandLineRunner {
                         .message("Awful")
                         .build()
         ));
+
+        System.out.println("----------------------------QUERY-------------------------------");
+        System.out.println("----------- Spring Data Methods -------------------");
+        printResult(() -> customerRepo.findByAgeGreaterThan(40));
+        System.out.println("---------------- JPQL ---------------");
+        printResult(() -> customerRepo.findOldPersonsJpql(60));
+    }
+
+    private void printResult(Supplier<List<Customer>> customerSupplier) {
+        System.out.println(customerSupplier.get().stream()
+                .map(Customer::getName)
+                .collect(Collectors.joining(", ")));
     }
 }
