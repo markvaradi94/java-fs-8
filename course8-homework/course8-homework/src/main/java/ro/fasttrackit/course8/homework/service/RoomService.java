@@ -79,6 +79,12 @@ public class RoomService {
         return cleanupService.findAllByRoomId(roomId);
     }
 
+    public CleanupEntity createCleanupForRoom(long id, CleanupEntity cleanup) {
+        RoomEntity roomEntity = getOrThrow(id);
+        cleanup.setRoom(roomEntity);
+        return cleanupService.addCleanup(cleanup);
+    }
+
     private RoomEntity getOrThrow(Long id) {
         return findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Could not find room with id " + id));

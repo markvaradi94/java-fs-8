@@ -53,6 +53,11 @@ public class RoomController {
         return cleanupMapper.toDto(roomService.getCleanupsForRoom(id));
     }
 
+    @PostMapping("{id}/cleanups")
+    public CleanupDto createCleanup(@RequestBody CleanupDto cleanup, long id) {
+        return cleanupMapper.toDto(roomService.createCleanupForRoom(id, cleanupMapper.toEntity(cleanup)));
+    }
+
     @PostMapping
     public RoomDto add(@RequestBody RoomDto roomDto) {
         return roomMapper.toDto(roomService.addRoom(roomMapper.toEntity(roomDto)));
